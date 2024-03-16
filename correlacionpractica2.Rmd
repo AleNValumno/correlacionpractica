@@ -1,0 +1,106 @@
+---
+title: "Untitled"
+author: "Alejandro Nieto"
+date: "2024-03-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+Para este ejercicio he cambio el nombre del archivo data en data2 para diferenciarlo de otro archivo que se llamaba igual.
+
+#1
+En R la correlacion lineal consiste en la medida de la relación lineal entre dos variables, que puede ser positiva perfecta(1), negativa perfecta(-1) o en medio(0), que significa que no existe correlacion. Esto es asi porque en estadistica se refiere a la relación cuantitativa entre dos variables medidas en escalas ordinales o de intervalos.
+
+#2
+Es una puebra de correlacion paramétrica porque asume que las variables siguen una distribucion normal y su relacion entre ellas es lineal. La diferencia entre las puebras parametricas y las que no son porque mientras que las puebras parametrica(ejemplo) asumen distribuciones estadisticas subyacentes a los datos y por lo tanto, deben cumplirse algunas condiciones de validez para que el resultado de la puebra paramétrica sea fiable. En cambio las puebras no paramétricas no deben ajustarse a ninguna distribucion y pueden aplicarse incluso aunque no se cumplan las condiciones de validez paramétricas.
+
+#3
+
+```{r echo=TRUE}
+data2<-cor(data2)
+print(data2)
+```
+Con el comando cor(data) se ha calculado la correlacion de las variables almacenadas en el archivo "data 2" y con el comando print para que se mostrase en esta pestaña y en la consola las columnas con los datos.
+
+#4
+```{r echo=TRUE}
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...) {
+  usr <- par("usr")
+  on.exit(par(usr))
+ par(usr = c(0, 1, 0, 1))
+ cor <- abs(cor(x, y))
+ txt <- paste0(prefix, format(c(cor, 0.123456789), digits = digits)[1])
+ if(missing(cex.cor)) {
+   cex.cor <- 0.4 / strwidth(txt)
+ }
+ text(0.5, 0.5, txt,
+cex = 1 + cex.cor * cor)
+}
+
+pairs(data2,
+      upper.panel = panel.cor ,
+      lower.panel = panel.smooth)
+```
+#5
+```{r echo=TRUE}
+library(correlation)
+matriz <- correlation(data2)
+matriz
+```
+Para este ejercicio se ha usado la funcion library, para cargar este paquete de datos, y la funcion matriz, para crear una matriz de correlación lineal, IC 95% y p-value, donde estan representadas todas las variables del data frame ‘data2’.
+#6
+```{r echo=TRUE}
+library(ggpubr)
+library(ggplot2)
+ggscatter(data2, x = "altura", y = "peso",
+          add = "reg.line", conf.int = TRUE,
+          cor.coef = TRUE, cor.method = "pearson",
+          xlab = "altura piezas (mm)", ylab = "Peso piezas (mg)")
+```
+
+Para este ejercico se han usado principalmente los comandos library(ggpubr),library(ggplot2) y ggscatter para crear Visualiza gráficamente la correlación lineal existente entre las variables ‘altura’ y ‘peso’. El comando ggpubr sirve para facilitar la creacion de graficos con el commando ggplot2 y ampliar su funcionalidad. El comando ggplot2 sirve para la visualizacion de datos de forma elegante. Por ultimo el comando ggscatter sirve para crear un diagrama de dispersion.
+#7
+```{r }
+library(corrplot)
+corrplot(cor(data2))
+```
+
+Para este ejercico se ha utilizado el comando corrplot() para trazar y vizualizar el grafico de la matriz de correlación.
+#8
+#a
+```{r echo=TRUE}
+distancia <- c(1.1,100.2,90.3,5.4,57.5,6.6,34.7,65.8,57.9,86.1)
+n_piezas <- c(110,2,6,98,40,94,31,5,8,10)
+dist_ncuent <- data.frame(distancia,n_piezas)
+knitr::kable(dist_ncuent)
+cor.test(dist_ncuent$distancia, dist_ncuent$n_piezas)
+```
+#b
+El coeficiente de correlación es -0.924984
+
+#c
+El nivel de significancia es 0.0001265
+#d
+El intervalo de confianza es -0.9824414 -0.7072588
+#e
+Al ser el resultado un coeficiente negativo y por tanto, tiene una direccion inversa entre ambas y su intensidad es 0,9249824.
+#f
+Si es significativa al ser inferior a 0,05, es decir, tiene una pobrabilidad de 5% de tener un resultado al azar esta relacion.
+#g
+Los datos optenidos muestras que esta correlacion es significativa, por lo que aumenta un poco el numero de muestras, no se deberia optener una variacion significativo, debido a que tambien esta correlacion es lineal por los resultados obtenidos. Sim embargo, es normal que en estadistica para comprobar que realmente es significativo, se realizan mas muestras, como 30 o 40.
+#9
+
+#10
